@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "lib": [
+      "es2021",
+      "DOM"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./dist",
+    "paths": {
+      "@hyperbrowser/agent": [
+        "./src/index"
+      ],
+      "@hyperbrowser/agent/types": [
+        "./src/types/index"
+      ],
+      "@hyperbrowser/agent/custom-actions": [
+        "./src/custom-actions/index"
+      ],
+      "@hyperbrowser/agent/actions": [
+        "./src/agent/actions/index"
+      ],
+      "@hyperbrowser/agent/utils": [
+        "./src/utils/index"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "debug"
+  ]
+}
