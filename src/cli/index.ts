@@ -8,7 +8,7 @@ import boxen from "boxen";
 import chalk from "chalk";
 import readline from "readline";
 
-import { HyperAgent } from "@/agent";
+import { CtrlAgent } from "@/agent";
 import { UserInteractionAction } from "@/custom-actions";
 import {
   ActionOutput,
@@ -45,13 +45,13 @@ program
     const filePath = (options.file as string) || undefined;
     const mcpPath = (options.mcp as string) || undefined;
 
-    console.log(chalk.blue("HyperAgent CLI"));
+    console.log(chalk.blue("CtrlAgent CLI"));
     currentSpinner.info(
       `Pause using ${chalk.bold("ctrl + p")} and resume using ${chalk.bold("ctrl + r")}\n`
     );
     try {
 
-      const agent = new HyperAgent({
+      const agent = new CtrlAgent({
         debug: debug,
         browserProvider: "Local",
         customActions: [
@@ -152,7 +152,7 @@ program
           if (currentSpinner.isSpinning) {
             currentSpinner.stopAndPersist();
           }
-          console.log("\nShutting down HyperAgent");
+          console.log("\nShutting down CtrlAgent");
           try {
             await agent.closeAgent();
             process.exit(0);
@@ -195,7 +195,7 @@ program
       const onComplete = async (params: TaskOutput) => {
         console.log(
           boxen(params.output || "No Response", {
-            title: chalk.yellow("HyperAgent Response"),
+            title: chalk.yellow("CtrlAgent Response"),
             titleAlignment: "center",
             float: "center",
             padding: 1,
@@ -212,7 +212,7 @@ program
         });
         if (continueTask) {
           const taskDescription = await inquirer.input({
-            message: "What should HyperAgent do next for you?",
+            message: "What should CtrlAgent do next for you?",
             required: true,
           });
 
@@ -237,7 +237,7 @@ program
           taskDescription = (await fs.promises.readFile(filePath)).toString();
         } else {
           taskDescription = await inquirer.input({
-            message: "What should HyperAgent do for you today?",
+            message: "What should CtrlAgent do for you today?",
             required: true,
           });
         }

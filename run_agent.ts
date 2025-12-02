@@ -1,11 +1,11 @@
-import { HyperAgent } from "./src";
+import { CtrlAgent } from "./src";
 import * as dotenv from "dotenv";
 import * as readline from "readline";
 
 dotenv.config();
 
 async function main() {
-    const agent = new HyperAgent({
+    const agent = new CtrlAgent({
         llm: {
             provider: "openai",
             model: "gpt-4o",

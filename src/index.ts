@@ -1,13 +1,13 @@
-import { HyperAgent } from "./agent";
+import { CtrlAgent } from "./agent";
 import { TaskStatus } from "./types/agent/types";
 
-export { TaskStatus, HyperAgent };
-export default HyperAgent;
+export { TaskStatus, CtrlAgent };
+export default CtrlAgent;
 
 // For CommonJS compatibility
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = HyperAgent;
-  module.exports.HyperAgent = HyperAgent;
+  module.exports = CtrlAgent;
+  module.exports.CtrlAgent = CtrlAgent;
   module.exports.TaskStatus = TaskStatus;
-  module.exports.default = HyperAgent;
+  module.exports.default = CtrlAgent;
 }

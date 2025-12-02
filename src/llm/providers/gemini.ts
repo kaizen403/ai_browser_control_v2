@@ -1,10 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import {
-  HyperAgentLLM,
-  HyperAgentMessage,
-  HyperAgentStructuredResult,
-  HyperAgentCapabilities,
+  CtrlAgentLLM,
+  CtrlAgentMessage,
+  CtrlAgentStructuredResult,
+  CtrlAgentCapabilities,
   StructuredOutputRequest,
 } from "../types";
 import { convertToGeminiMessages } from "../utils/message-converter";
@@ -17,7 +17,7 @@ export interface GeminiClientConfig {
   maxTokens?: number;
 }
 
-export class GeminiClient implements HyperAgentLLM {
+export class GeminiClient implements CtrlAgentLLM {
   private client: GoogleGenAI;
   private model: string;
   private temperature: number;
@@ -36,7 +36,7 @@ export class GeminiClient implements HyperAgentLLM {
   }
 
   async invoke(
-    messages: HyperAgentMessage[],
+    messages: CtrlAgentMessage[],
     options?: {
       temperature?: number;
       maxTokens?: number;
@@ -72,8 +72,8 @@ export class GeminiClient implements HyperAgentLLM {
 
   async invokeStructured<TSchema extends z.ZodTypeAny>(
     request: StructuredOutputRequest<TSchema>,
-    messages: HyperAgentMessage[]
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+    messages: CtrlAgentMessage[]
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     const { messages: geminiMessages } = convertToGeminiMessages(messages);
     const responseSchema = convertToGeminiResponseSchema(request.schema);
 
@@ -120,7 +120,7 @@ export class GeminiClient implements HyperAgentLLM {
     return this.model;
   }
 
-  getCapabilities(): HyperAgentCapabilities {
+  getCapabilities(): CtrlAgentCapabilities {
     return {
       multimodal: true,
       toolCalling: false, // Gemini has limited tool calling support

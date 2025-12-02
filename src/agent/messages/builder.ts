@@ -1,5 +1,5 @@
 import { AgentStep } from "@/types";
-import { HyperAgentMessage } from "@/llm/types";
+import { CtrlAgentMessage } from "@/llm/types";
 import { Page } from "playwright-core";
 import { getScrollInfo } from "./utils";
 import { retry } from "@/utils/retry";
@@ -7,14 +7,14 @@ import { A11yDOMState } from "@/context-providers/a11y-dom/types";
 import { HyperVariable } from "@/types/agent/types";
 
 export const buildAgentStepMessages = async (
-  baseMessages: HyperAgentMessage[],
+  baseMessages: CtrlAgentMessage[],
   steps: AgentStep[],
   task: string,
   page: Page,
   domState: A11yDOMState,
   screenshot: string | undefined,
   variables: HyperVariable[]
-): Promise<HyperAgentMessage[]> => {
+): Promise<CtrlAgentMessage[]> => {
   const messages = [...baseMessages];
 
   // Add the final goal section

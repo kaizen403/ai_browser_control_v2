@@ -35,7 +35,7 @@ import { A11yDOMState } from "@/context-providers/a11y-dom/types";
 import { Page } from "playwright-core";
 import { ActionNotFoundError } from "../actions";
 import { AgentCtx } from "./types";
-import { HyperAgentMessage } from "@/llm/types";
+import { CtrlAgentMessage } from "@/llm/types";
 import { Jimp } from "jimp";
 
 // DomChunkAggregator logic moved to shared/dom-capture.ts
@@ -229,7 +229,7 @@ export const runAgentTask = async (
   // V1 always uses visual mode with full system prompt
   const systemPrompt = SYSTEM_PROMPT;
 
-  const baseMsgs: HyperAgentMessage[] = [
+  const baseMsgs: CtrlAgentMessage[] = [
     { role: "system", content: systemPrompt },
   ];
 

@@ -72,7 +72,7 @@ export const ExtractActionDefinition: AgentActionDefinition = {
           ],
         },
       ]);
-      // Handle both string and HyperAgentContentPart[] responses
+      // Handle both string and CtrlAgentContentPart[] responses
       let extractedContent = "";
       if (typeof response.content === "string") {
         extractedContent = response.content;

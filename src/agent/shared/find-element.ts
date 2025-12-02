@@ -4,7 +4,7 @@
  */
 
 import type { Page } from "playwright-core";
-import type { HyperAgentLLM } from "@/llm/types";
+import type { CtrlAgentLLM } from "@/llm/types";
 import { examineDom } from "../examine-dom";
 import type { ExamineDomResult } from "../examine-dom/types";
 import type { AccessibilityNode } from "@/context-providers/a11y-dom/types";
@@ -60,7 +60,7 @@ export interface FindElementResult {
 export async function findElementWithInstruction(
   instruction: string,
   page: Page,
-  llm: HyperAgentLLM,
+  llm: CtrlAgentLLM,
   options: FindElementOptions = {}
 ): Promise<FindElementResult> {
   const { maxRetries = 1, retryDelayMs = 1000, debug = false } = options;

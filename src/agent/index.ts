@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 
 import {
   BrowserProviders,
-  HyperAgentConfig,
+  CtrlAgentConfig,
   MCPConfig,
   MCPServerConfig,
 } from "@/types/config";
-import { HyperAgentLLM, createLLMClient } from "@/llm/providers";
+import { CtrlAgentLLM, createLLMClient } from "@/llm/providers";
 import {
   ActionContext,
   ActionType,
@@ -48,7 +48,7 @@ import { setDebugOptions } from "@/debug/options";
 import { initializeRuntimeContext } from "./shared/runtime-context";
 import { performAction } from "./actions/shared/perform-action";
 
-export class HyperAgent<T extends BrowserProviders = "Local"> {
+export class CtrlAgent<T extends BrowserProviders = "Local"> {
   // aiAction configuration constants
   private static readonly AIACTION_CONFIG = {
     MAX_RETRIES: 10,
@@ -59,7 +59,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
     MAX_LABEL_LENGTH: 60,
   };
 
-  private llm: HyperAgentLLM;
+  private llm: CtrlAgentLLM;
   private tasks: Record<string, TaskState> = {};
   private tokenLimit = 128000;
   private debug = false;
@@ -86,7 +86,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
     this._currentPage = page;
   }
 
-  constructor(params: HyperAgentConfig<T> = {}) {
+  constructor(params: CtrlAgentConfig<T> = {}) {
     if (!params.llm) {
       if (process.env.OPENAI_API_KEY) {
         this.llm = createLLMClient({
@@ -101,7 +101,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
       // It's an LLMConfig
       this.llm = createLLMClient(params.llm);
     } else {
-      // It's already a HyperAgentLLM instance
+      // It's already a CtrlAgentLLM instance
       this.llm = params.llm;
     }
     this.browserProviderType = (params.browserProvider ?? "Local") as T;
@@ -272,7 +272,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
    */
   public async closeAgent(): Promise<void> {
     await disposeAllCDPClients().catch((error) => {
-      console.warn("[HyperAgent] Failed to dispose CDP clients:", error);
+      console.warn("[CtrlAgent] Failed to dispose CDP clients:", error);
     });
     for (const taskId in this.tasks) {
       const task = this.tasks[taskId];
@@ -320,7 +320,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
       ) {
         if (this.debug) {
           console.log(
-            `[HyperAgent] Polling detected new page, switching focus: ${lastPage.url()}`
+            `[CtrlAgent] Polling detected new page, switching focus: ${lastPage.url()}`
           );
         }
         this._currentPage = lastPage;
@@ -391,7 +391,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
         if (opener === activeTaskPage) {
           if (this.debug) {
             console.log(
-              `[HyperAgent] Task following new tab: ${newPage.url()}`
+              `[CtrlAgent] Task following new tab: ${newPage.url()}`
             );
           }
           activeTaskPage = newPage;
@@ -466,7 +466,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
         if (opener === activeTaskPage) {
           if (this.debug) {
             console.log(
-              `[HyperAgent] Task following new tab: ${newPage.url()}`
+              `[CtrlAgent] Task following new tab: ${newPage.url()}`
             );
           }
           activeTaskPage = newPage;
@@ -643,7 +643,7 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
         // Error case - write available elements
         const availableElements = this.collectInteractiveElements(
           params.elementMap,
-          HyperAgent.AIACTION_CONFIG.MAX_DEBUG_ELEMENTS_TO_STORE
+          CtrlAgent.AIACTION_CONFIG.MAX_DEBUG_ELEMENTS_TO_STORE
         );
 
         await writeAiActionDebug({
@@ -782,8 +782,8 @@ export class HyperAgent<T extends BrowserProviders = "Local"> {
       } = await this.findElementWithRetry(
         instruction,
         initialPage,
-        HyperAgent.AIACTION_CONFIG.MAX_RETRIES,
-        HyperAgent.AIACTION_CONFIG.RETRY_DELAY_MS,
+        CtrlAgent.AIACTION_CONFIG.MAX_RETRIES,
+        CtrlAgent.AIACTION_CONFIG.RETRY_DELAY_MS,
         startTime
       );
 

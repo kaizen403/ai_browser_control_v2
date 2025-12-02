@@ -1,4 +1,4 @@
-import { HyperAgentMessage, HyperAgentContentPart } from "../types";
+import { CtrlAgentMessage, CtrlAgentContentPart } from "../types";
 import type {
   MessageParam,
   ContentBlockParam,
@@ -10,7 +10,7 @@ import type {
  * Utility functions for converting between different message formats
  */
 
-export function convertToOpenAIMessages(messages: HyperAgentMessage[]) {
+export function convertToOpenAIMessages(messages: CtrlAgentMessage[]) {
   return messages.map((msg) => {
     const openAIMessage: Record<string, unknown> = {
       role: msg.role,
@@ -19,7 +19,7 @@ export function convertToOpenAIMessages(messages: HyperAgentMessage[]) {
     if (typeof msg.content === "string") {
       openAIMessage.content = msg.content;
     } else {
-      openAIMessage.content = msg.content.map((part: HyperAgentContentPart) => {
+      openAIMessage.content = msg.content.map((part: CtrlAgentContentPart) => {
         if (part.type === "text") {
           return { type: "text", text: part.text };
         } else if (part.type === "image") {
@@ -58,7 +58,7 @@ export function convertToOpenAIMessages(messages: HyperAgentMessage[]) {
   });
 }
 
-export function convertToAnthropicMessages(messages: HyperAgentMessage[]) {
+export function convertToAnthropicMessages(messages: CtrlAgentMessage[]) {
   const anthropicMessages: MessageParam[] = [];
   let systemMessage: string | undefined;
 
@@ -127,7 +127,7 @@ function normalizeImageMimeType(
   return "image/png";
 }
 
-export function convertToGeminiMessages(messages: HyperAgentMessage[]) {
+export function convertToGeminiMessages(messages: CtrlAgentMessage[]) {
   const geminiMessages: Record<string, unknown>[] = [];
   let systemInstruction: string | undefined;
 
@@ -144,7 +144,7 @@ export function convertToGeminiMessages(messages: HyperAgentMessage[]) {
     if (typeof msg.content === "string") {
       geminiMessage.parts = [{ text: msg.content }];
     } else {
-      geminiMessage.parts = msg.content.map((part: HyperAgentContentPart) => {
+      geminiMessage.parts = msg.content.map((part: CtrlAgentContentPart) => {
         if (part.type === "text") {
           return { text: part.text };
         } else if (part.type === "image") {

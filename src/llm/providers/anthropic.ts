@@ -1,10 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import {
-  HyperAgentLLM,
-  HyperAgentMessage,
-  HyperAgentStructuredResult,
-  HyperAgentCapabilities,
+  CtrlAgentLLM,
+  CtrlAgentMessage,
+  CtrlAgentStructuredResult,
+  CtrlAgentCapabilities,
   StructuredOutputRequest,
 } from "../types";
 import { convertToAnthropicMessages } from "../utils/message-converter";
@@ -35,7 +35,7 @@ export interface AnthropicClientConfig {
   maxTokens?: number;
 }
 
-export class AnthropicClient implements HyperAgentLLM {
+export class AnthropicClient implements CtrlAgentLLM {
   private client: Anthropic;
   private model: string;
   private temperature: number;
@@ -51,7 +51,7 @@ export class AnthropicClient implements HyperAgentLLM {
   }
 
   async invoke(
-    messages: HyperAgentMessage[],
+    messages: CtrlAgentMessage[],
     options?: {
       temperature?: number;
       maxTokens?: number;
@@ -92,8 +92,8 @@ export class AnthropicClient implements HyperAgentLLM {
 
   async invokeStructured<TSchema extends z.ZodTypeAny>(
     request: StructuredOutputRequest<TSchema>,
-    messages: HyperAgentMessage[]
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+    messages: CtrlAgentMessage[]
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     const { messages: anthropicMessages, system } =
       convertToAnthropicMessages(messages);
 
@@ -122,7 +122,7 @@ export class AnthropicClient implements HyperAgentLLM {
     return this.model;
   }
 
-  getCapabilities(): HyperAgentCapabilities {
+  getCapabilities(): CtrlAgentCapabilities {
     return {
       multimodal: true,
       toolCalling: true,
@@ -134,7 +134,7 @@ export class AnthropicClient implements HyperAgentLLM {
     request: StructuredOutputRequest<TSchema>,
     messages: MessageParam[],
     system?: string
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     if (!request.actions || request.actions.length === 0) {
       throw new Error(
         "Anthropic client requires at least one action definition"
@@ -237,7 +237,7 @@ export class AnthropicClient implements HyperAgentLLM {
     request: StructuredOutputRequest<TSchema>,
     messages: MessageParam[],
     system?: string
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     const tool = convertToAnthropicTool(request.schema);
     const toolChoice = createAnthropicToolChoice("structured_output");
 

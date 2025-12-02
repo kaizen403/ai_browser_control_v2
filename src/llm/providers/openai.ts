@@ -1,12 +1,12 @@
 import OpenAI from "openai";
 import { z } from "zod";
 import {
-  HyperAgentLLM,
-  HyperAgentMessage,
-  HyperAgentStructuredResult,
-  HyperAgentCapabilities,
+  CtrlAgentLLM,
+  CtrlAgentMessage,
+  CtrlAgentStructuredResult,
+  CtrlAgentCapabilities,
   StructuredOutputRequest,
-  HyperAgentContentPart,
+  CtrlAgentContentPart,
 } from "../types";
 import { convertToOpenAIMessages } from "../utils/message-converter";
 import { convertToOpenAIJsonSchema } from "../utils/schema-converter";
@@ -33,11 +33,11 @@ export interface OpenAIClientConfig {
 }
 
 /**
- * Convert OpenAI's content format back to HyperAgentContentPart format
+ * Convert OpenAI's content format back to CtrlAgentContentPart format
  */
 function convertFromOpenAIContent(
   content: any
-): string | HyperAgentContentPart[] {
+): string | CtrlAgentContentPart[] {
   if (typeof content === "string") {
     return content;
   }
@@ -68,7 +68,7 @@ function convertFromOpenAIContent(
   return String(content);
 }
 
-export class OpenAIClient implements HyperAgentLLM {
+export class OpenAIClient implements CtrlAgentLLM {
   private client: OpenAI;
   private model: string;
   private temperature: number;
@@ -85,7 +85,7 @@ export class OpenAIClient implements HyperAgentLLM {
   }
 
   async invoke(
-    messages: HyperAgentMessage[],
+    messages: CtrlAgentMessage[],
     options?: {
       temperature?: number;
       maxTokens?: number;
@@ -93,7 +93,7 @@ export class OpenAIClient implements HyperAgentLLM {
     }
   ): Promise<{
     role: "assistant";
-    content: string | HyperAgentContentPart[];
+    content: string | CtrlAgentContentPart[];
     toolCalls?: Array<{ id?: string; name: string; arguments: unknown }>;
     usage?: { inputTokens?: number; outputTokens?: number };
   }> {
@@ -149,8 +149,8 @@ export class OpenAIClient implements HyperAgentLLM {
 
   async invokeStructured<TSchema extends z.ZodTypeAny>(
     request: StructuredOutputRequest<TSchema>,
-    messages: HyperAgentMessage[]
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+    messages: CtrlAgentMessage[]
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     const openAIMessages = convertToOpenAIMessages(messages);
     const responseFormat = convertToOpenAIJsonSchema(request.schema);
     if (shouldDebugStructuredSchema()) {
@@ -213,7 +213,7 @@ export class OpenAIClient implements HyperAgentLLM {
     return this.model;
   }
 
-  getCapabilities(): HyperAgentCapabilities {
+  getCapabilities(): CtrlAgentCapabilities {
     return {
       multimodal: true,
       toolCalling: true,

@@ -1,12 +1,12 @@
 import OpenAI from "openai";
 import {
-  HyperAgentLLM,
-  HyperAgentMessage,
-  HyperAgentCapabilities,
-  HyperAgentInvokeOptions,
-  HyperAgentStructuredResult,
+  CtrlAgentLLM,
+  CtrlAgentMessage,
+  CtrlAgentCapabilities,
+  CtrlAgentInvokeOptions,
+  CtrlAgentStructuredResult,
   StructuredOutputRequest,
-  HyperAgentContentPart,
+  CtrlAgentContentPart,
 } from "../types";
 import { convertToOpenAIMessages } from "../utils/message-converter";
 import { convertToOpenAIJsonSchema } from "../utils/schema-converter";
@@ -20,7 +20,7 @@ export interface DeepSeekClientConfig {
   baseURL?: string;
 }
 
-export class DeepSeekClient implements HyperAgentLLM {
+export class DeepSeekClient implements CtrlAgentLLM {
   private client: OpenAI;
   private model: string;
   private temperature: number;
@@ -44,7 +44,7 @@ export class DeepSeekClient implements HyperAgentLLM {
     return this.model;
   }
 
-  getCapabilities(): HyperAgentCapabilities {
+  getCapabilities(): CtrlAgentCapabilities {
     return {
       multimodal: true,
       toolCalling: true,
@@ -53,11 +53,11 @@ export class DeepSeekClient implements HyperAgentLLM {
   }
 
   async invoke(
-    messages: HyperAgentMessage[],
-    options?: HyperAgentInvokeOptions
+    messages: CtrlAgentMessage[],
+    options?: CtrlAgentInvokeOptions
   ): Promise<{
     role: "assistant";
-    content: string | HyperAgentContentPart[];
+    content: string | CtrlAgentContentPart[];
     toolCalls?: Array<{ id?: string; name: string; arguments: unknown }>;
     usage?: { inputTokens?: number; outputTokens?: number };
   }> {
@@ -108,8 +108,8 @@ export class DeepSeekClient implements HyperAgentLLM {
 
   async invokeStructured<TSchema extends z.ZodTypeAny>(
     request: StructuredOutputRequest<TSchema>,
-    messages: HyperAgentMessage[]
-  ): Promise<HyperAgentStructuredResult<TSchema>> {
+    messages: CtrlAgentMessage[]
+  ): Promise<CtrlAgentStructuredResult<TSchema>> {
     const openAIMessages = convertToOpenAIMessages(messages);
     const responseFormat = convertToOpenAIJsonSchema(request.schema);
 

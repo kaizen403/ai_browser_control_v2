@@ -1033,7 +1033,7 @@ frameMap.set(1, {
 ```typescript
 page.ai("Find a flight from NYC to LAX")
   ↓
-HyperAgent.executeTask(task, params, page)
+CtrlAgent.executeTask(task, params, page)
   ↓
 runAgentTask(agentCtx, taskState, params)
   ↓
@@ -1062,7 +1062,7 @@ Loop until complete or maxSteps:
 ```typescript
 page.aiAction("click the login button")
   ↓
-HyperAgent.executeSingleAction(instruction, page, params)
+CtrlAgent.executeSingleAction(instruction, page, params)
   ↓
 findElementWithRetry(instruction, page, llm, options)
   ↓

@@ -1,7 +1,7 @@
-# HyperAgent Current State Analysis
+# CtrlAgent Current State Analysis
 
 ## Overview
-HyperAgent is a browser automation SDK that uses LLM-powered agents to execute tasks on web pages. It provides both imperative page methods (`page.ai()`, `page.extract()`) and a programmatic task execution API.
+CtrlAgent is a browser automation SDK that uses LLM-powered agents to execute tasks on web pages. It provides both imperative page methods (`page.ai()`, `page.extract()`) and a programmatic task execution API.
 
 ---
 
@@ -9,12 +9,12 @@ HyperAgent is a browser automation SDK that uses LLM-powered agents to execute t
 
 ### 1. Entry Points & Public API
 
-#### **HyperAgent Class** ([src/agent/index.ts](src/agent/index.ts))
+#### **CtrlAgent Class** ([src/agent/index.ts](src/agent/index.ts))
 
 The main class that orchestrates everything:
 
 ```typescript
-class HyperAgent<T extends BrowserProviders = "Local"> {
+class CtrlAgent<T extends BrowserProviders = "Local"> {
   // Core methods
   async executeTask(task: string, params?: TaskParams, initPage?: Page): Promise<TaskOutput>
   async executeTaskAsync(task: string, params?: TaskParams, initPage?: Page): Promise<Task>
@@ -376,7 +376,7 @@ text = text.replace(`<<${variable.key}>>`, variable.value);
 
 **Selection:** ([index.ts:85-94](src/agent/index.ts#L85-L94))
 ```typescript
-new HyperAgent({
+new CtrlAgent({
   browserProvider: "Local" | "Hyperbrowser",
   localConfig: { ... },
   hyperbrowserConfig: { ... }

@@ -5,7 +5,7 @@
  * matching elements from the accessibility tree with confidence scores.
  */
 
-import { HyperAgentLLM } from "@/llm/types";
+import { CtrlAgentLLM } from "@/llm/types";
 import { ExamineDomContext, ExamineDomResult } from "./types";
 import {
   buildExamineDomSystemPrompt,
@@ -40,7 +40,7 @@ import { ExamineDomResultsSchema, ExamineDomResultsType } from "./schema";
 export async function examineDom(
   instruction: string,
   context: ExamineDomContext,
-  llm: HyperAgentLLM
+  llm: CtrlAgentLLM
 ): Promise<{
   elements: ExamineDomResultsType["elements"];
   llmResponse: { rawText: string; parsed: unknown };

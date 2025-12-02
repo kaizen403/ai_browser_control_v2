@@ -1,6 +1,6 @@
 
 import { AgentActionDefinition } from "./agent/actions/types";
-import { HyperAgentLLM, LLMConfig } from "@/llm/providers";
+import { CtrlAgentLLM, LLMConfig } from "@/llm/providers";
 import {
   LocalBrowserProvider,
 } from "@/browser-providers";
@@ -66,22 +66,22 @@ export interface PlaywrightConnectorOptions {
   context?: BrowserContext;
 }
 
-export interface HyperAgentConnectorConfig {
+export interface CtrlAgentConnectorConfig {
   driver: "playwright"; // Future drivers (puppeteer, raw CDP) will extend this union.
   options: PlaywrightConnectorOptions;
 }
 
-export interface HyperAgentConfig<T extends BrowserProviders = "Local"> {
+export interface CtrlAgentConfig<T extends BrowserProviders = "Local"> {
   customActions?: Array<AgentActionDefinition>;
 
   browserProvider?: T;
   /**
    * Connector configuration (future Phase 4). Mutually exclusive with browserProvider.
    */
-  connectorConfig?: HyperAgentConnectorConfig;
+  connectorConfig?: CtrlAgentConnectorConfig;
 
   debug?: boolean;
-  llm?: HyperAgentLLM | LLMConfig;
+  llm?: CtrlAgentLLM | LLMConfig;
 
 
   localConfig?: ConstructorParameters<typeof LocalBrowserProvider>[0];

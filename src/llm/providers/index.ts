@@ -1,4 +1,4 @@
-import { HyperAgentLLM } from "../types";
+import { CtrlAgentLLM } from "../types";
 import { createOpenAIClient, OpenAIClientConfig } from "./openai";
 import { createAnthropicClient, AnthropicClientConfig } from "./anthropic";
 import { createGeminiClient, GeminiClientConfig } from "./gemini";
@@ -15,7 +15,7 @@ export interface LLMConfig {
   baseURL?: string; // For OpenAI custom endpoints
 }
 
-export function createLLMClient(config: LLMConfig): HyperAgentLLM {
+export function createLLMClient(config: LLMConfig): CtrlAgentLLM {
   switch (config.provider) {
     case "openai":
       return createOpenAIClient({
@@ -63,7 +63,7 @@ export { createGeminiClient } from "./gemini";
 export { createDeepSeekClient } from "./deepseek";
 
 // Export types (use type-only export for interface)
-export type { HyperAgentLLM } from "../types";
+export type { CtrlAgentLLM } from "../types";
 
 // Export utility functions
 export * from "../utils/message-converter";

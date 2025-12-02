@@ -1,14 +1,14 @@
 import { AgentActionDefinition } from "@/types/agent/actions/types";
 import { z } from "zod";
 
-export type HyperAgentRole = "system" | "user" | "assistant" | "tool";
+export type CtrlAgentRole = "system" | "user" | "assistant" | "tool";
 
-export type HyperAgentTextPart = {
+export type CtrlAgentTextPart = {
   type: "text";
   text: string;
 };
 
-export type HyperAgentImagePart = {
+export type CtrlAgentImagePart = {
   type: "image";
   /** data URL or remote URL */
   url: string;
@@ -16,41 +16,41 @@ export type HyperAgentImagePart = {
   mimeType?: string;
 };
 
-export type HyperAgentToolPart = {
+export type CtrlAgentToolPart = {
   type: "tool_call";
   toolName: string;
   arguments: unknown;
 };
 
-export type HyperAgentContentPart =
-  | HyperAgentTextPart
-  | HyperAgentImagePart
-  | HyperAgentToolPart;
+export type CtrlAgentContentPart =
+  | CtrlAgentTextPart
+  | CtrlAgentImagePart
+  | CtrlAgentToolPart;
 
-export type HyperAgentMessage =
+export type CtrlAgentMessage =
   | {
-      role: Extract<HyperAgentRole, "system" | "user">;
-      content: string | HyperAgentContentPart[];
+      role: Extract<CtrlAgentRole, "system" | "user">;
+      content: string | CtrlAgentContentPart[];
     }
   | {
-      role: Extract<HyperAgentRole, "assistant">;
-      content: string | HyperAgentContentPart[];
+      role: Extract<CtrlAgentRole, "assistant">;
+      content: string | CtrlAgentContentPart[];
       toolCalls?: Array<{ id?: string; name: string; arguments: unknown }>;
     }
   | {
       role: "tool";
       toolName: string;
       toolCallId?: string;
-      content: string | HyperAgentContentPart[];
+      content: string | CtrlAgentContentPart[];
     };
 
-export type HyperAgentCapabilities = {
+export type CtrlAgentCapabilities = {
   multimodal: boolean;
   toolCalling: boolean;
   jsonMode: boolean;
 };
 
-export type HyperAgentInvokeOptions = {
+export type CtrlAgentInvokeOptions = {
   temperature?: number;
   maxTokens?: number;
   /** provider specific; passed through unmodified */
@@ -64,32 +64,32 @@ export type StructuredOutputRequest<TSchema extends z.ZodTypeAny> = {
     forceJson?: boolean;
     toolName?: string;
   };
-  options?: HyperAgentInvokeOptions;
+  options?: CtrlAgentInvokeOptions;
   actions?: AgentActionDefinition[];
 };
 
-export type HyperAgentStructuredResult<TSchema extends z.ZodTypeAny> = {
+export type CtrlAgentStructuredResult<TSchema extends z.ZodTypeAny> = {
   rawText: string;
   parsed: z.infer<TSchema> | null;
 };
 
-export interface HyperAgentLLM {
+export interface CtrlAgentLLM {
   invoke(
-    messages: HyperAgentMessage[],
-    options?: HyperAgentInvokeOptions
+    messages: CtrlAgentMessage[],
+    options?: CtrlAgentInvokeOptions
   ): Promise<{
     role: "assistant";
-    content: string | HyperAgentContentPart[];
+    content: string | CtrlAgentContentPart[];
     toolCalls?: Array<{ id?: string; name: string; arguments: unknown }>;
     usage?: { inputTokens?: number; outputTokens?: number };
   }>;
 
   invokeStructured<TSchema extends z.ZodTypeAny>(
     request: StructuredOutputRequest<TSchema>,
-    messages: HyperAgentMessage[]
-  ): Promise<HyperAgentStructuredResult<TSchema>>;
+    messages: CtrlAgentMessage[]
+  ): Promise<CtrlAgentStructuredResult<TSchema>>;
 
   getProviderId(): string;
   getModelId(): string;
-  getCapabilities(): HyperAgentCapabilities;
+  getCapabilities(): CtrlAgentCapabilities;
 }

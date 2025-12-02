@@ -8,7 +8,7 @@
 - `llm/` houses native adapters (`openai`, `anthropic`, `gemini`, `deepseek`) plus schema/message converters—use `createLLMClient` and update `providers/index.ts` for new backends.
 - `types/` centralizes config, browser provider, agent state/action definitions (including `cdpActions`, visual/streaming/cache flags). Add interfaces here before wiring features elsewhere.
 - `utils/` collects shared helpers (`ErrorEmitter`, retry/sleep, markdown conversion, DOM settle logic); prefer reuse over reimplementation.
-- `custom-actions/` is the extension point for domain-specific capabilities; register via `HyperAgentConfig.customActions` and avoid the reserved `complete` action type.
+- `custom-actions/` is the extension point for domain-specific capabilities; register via `CtrlAgentConfig.customActions` and avoid the reserved `complete` action type.
 - `cli/` powers the CLI entrypoint (`src/cli/index.ts`); repo `index.ts` is the package entry.
 - `scripts/` holds ts-node smoke probes and integration harnesses (`test-page-ai.ts`, `test-async.ts`, `test-page-iframes.ts`, `run-webvoyager-eval.ts`, etc.).
 - `examples/`, `docs/`, and `assets/` provide reference flows and media—update alongside API or UX changes. `currentState.md` should mirror major architectural shifts.

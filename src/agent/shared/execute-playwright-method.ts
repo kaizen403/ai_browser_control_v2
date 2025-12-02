@@ -1,6 +1,6 @@
 /**
  * Shared utility for executing Playwright methods on locators
- * Extracted from HyperAgent.executePlaywrightMethod for reusability
+ * Extracted from CtrlAgent.executePlaywrightMethod for reusability
  */
 
 import type { Page } from "playwright-core";

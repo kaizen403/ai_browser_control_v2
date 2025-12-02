@@ -1,6 +1,6 @@
 import { Page } from "playwright-core";
 import { A11yDOMState } from "../../../context-providers/a11y-dom/types";
-import { HyperAgentLLM } from "@/llm/types";
+import { CtrlAgentLLM } from "@/llm/types";
 import { z } from "zod";
 import { MCPClient } from "../../../agent/mcp/client";
 import { HyperVariable } from "../types";
@@ -9,7 +9,7 @@ import type { FrameContextManager } from "@/cdp";
 export interface ActionContext {
   page: Page;
   domState: A11yDOMState;
-  llm: HyperAgentLLM;
+  llm: CtrlAgentLLM;
   tokenLimit: number;
   variables: HyperVariable[];
   debugDir?: string;
